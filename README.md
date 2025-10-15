@@ -1,5 +1,3 @@
-# Desafio de Laboratório de Redes
-
 # 🧠 Análise de Eficiência dos Cursos de ADS no ENADE (2008–2021)
 
 Este projeto tem como objetivo avaliar a **eficiência dos cursos de Análise e Desenvolvimento de Sistemas (ADS)** no **Exame Nacional de Desempenho dos Estudantes (ENADE)**, utilizando métodos de **Análise Envoltória de Dados (DEA)** e dados públicos disponibilizados pelo INEP.
