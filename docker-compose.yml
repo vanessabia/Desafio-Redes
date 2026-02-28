@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:latest
+    container_name: servidor_web
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    networks:
+      rede_servidor:
+        ipv4_address: 172.21.0.10
+
+
+  cliente1:
+    image: curlimages/curl
+    container_name: cliente1
+    command: sleep infinity
+    networks:
+      rede_clientes:
+        ipv4_address: 172.22.0.11   
+
+
+  cliente2:
+    image: curlimages/curl
+    container_name: cliente2
+    command: sleep infinity
+    networks:
+      rede_clientes:
+        ipv4_address: 172.22.0.12  
+
+
+  cliente_teste:
+    image: ubuntu:22.04
+    container_name: cliente_teste
+    cap_add:
+      - NET_ADMIN
+    command: bash -lc "apt-get update && apt-get install -y iproute2 iputils-ping curl && sleep infinity"
+    networks:
+      rede_clientes:
+        ipv4_address: 172.22.0.50
+
+
+  bench1:
+    image: httpd:2.4-alpine
+    container_name: bench1
+    command: sh -c "sleep infinity"
+    depends_on:
+      - web
+    networks:
+      rede_clientes:
+        ipv4_address: 172.22.0.21   
+
+
+  bench2:
+    image: httpd:2.4-alpine
+    container_name: bench2
+    command: sh -c "sleep infinity"
+    depends_on:
+      - web
+    networks:
+      rede_clientes:
+        ipv4_address: 172.22.0.22   
+
+
+  roteador:
+    build: ./router
+    container_name: roteador
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    networks:
+      rede_clientes:
+        ipv4_address: 172.22.0.254
+      rede_servidor:
+        ipv4_address: 172.21.0.254
+
+
+networks:
+  rede_clientes:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/24
+
+  rede_servidor:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24

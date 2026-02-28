@@ -1,0 +1,4 @@
+Cenario,RPS,Mean_ms,Transfer_KBps,P95_ms
+0 - Baseline,3288.32,15.205,510.59,17
+1 - Latencia 100ms,2680.93,18.65,416.28,22
+2 - Banda 1Mbit,2653.28,18.845,411.98,21
